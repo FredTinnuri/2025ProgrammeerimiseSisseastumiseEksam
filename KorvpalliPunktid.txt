@@ -1,0 +1,95 @@
+def loe_seis(failinimi):
+    sonastik = {}
+    with open(failinimi, encoding="UTF-8") as f:
+        for i in f:
+            toodeldud = i.strip()
+            poolitatud = toodeldud.split()
+            key = poolitatud[0]
+            value = []
+            for el in poolitatud[1:]:
+                value.append(int(el))
+            sonastik[key] = value
+    return sonastik
+
+def lisa_tulemus(nimi, sonastik, lisatav_tulemus):
+    if nimi in sonastik:
+        sonastik[nimi].append(lisatav_tulemus)
+        print("Tulemus lisatud!")
+    else:
+        print("Sellist korvpallurit pole sõnastikus!")
+    return sonastik
+
+def leia_keskmine(nimi, sonastik):
+    if nimi in sonastik:
+        punktid = sonastik[nimi]
+        summa = 0
+        for punkt in punktid:
+            summa += punkt
+        return summa / len(punktid)
+    else:
+        print("Sellist korvpallurit ei leitud.")
+        return None
+
+def leia_parim(sonastik):
+    parim_nimi = ""
+    parim_keskmine = 0
+    for nimi in sonastik:
+        keskmine = leia_keskmine(nimi, sonastik)
+        if keskmine > parim_keskmine:
+            parim_keskmine = keskmine
+            parim_nimi = nimi
+    print(f"Parim on {parim_nimi} tulemusega {round(parim_keskmine, 1)}")
+
+def salvesta_fail(failinimi, sonastik):
+    with open(failinimi, "w", encoding="UTF-8") as f:
+        for nimi in sonastik:
+            rida = nimi
+            for punkt in sonastik[nimi]:
+                rida += " " + str(punkt)
+            f.write(rida + "\n")
+
+def main():
+    sonastik = loe_seis("punktid.txt")
+
+    while True:
+        print("\n1- Vaata punktitabelit")
+        print("2- Lisa tulemus")
+        print("3- Leia korvpalluri keskmine")
+        print("4- Leia parim")
+        print("5- Lõpeta programmi töö")
+
+        valik = input("Vali tegevus: ")
+
+        if valik == "1":
+            for nimi in sonastik:
+                rida = nimi
+                for punkt in sonastik[nimi]:
+                    rida += " " + str(punkt)
+                print(rida)
+
+        elif valik == "2":
+            nimi = input("Sisesta nimi: ")
+            try:
+                tulemus = int(input("Sisesta punktid: "))
+                sonastik = lisa_tulemus(nimi, sonastik, tulemus)
+            except ValueError:
+                print("Palun sisesta korrektne arv!")
+
+        elif valik == "3":
+            nimi = input("Sisesta nimi: ")
+            keskmine = leia_keskmine(nimi, sonastik)
+            if keskmine is not None:
+                print(f"Mängija {nimi} keskmine skoor on {round(keskmine, 1)}")
+
+        elif valik == "4":
+            leia_parim(sonastik)
+
+        elif valik == "5":
+            salvesta_fail("punktid_uus.txt", sonastik)
+            print("Faili salvestatud. Programm lõpetas töö.")
+            break
+
+        else:
+            print("Tundmatu valik, proovi uuesti.")
+
+main()

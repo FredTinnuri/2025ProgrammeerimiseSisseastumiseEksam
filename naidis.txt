@@ -1,0 +1,116 @@
+# ================================ funktsioon ===========================
+
+# defineerimine
+def ruutu(arv):
+    return arv*2
+    
+# funkstiooni kutse (siia tuleb see realne vaartus nagu 2)   
+ruutu(2)
+
+
+# =========================== failist lugemine =======================
+
+
+with open ("hokiturniir.txt", encoding = "UTF-8") as f: # "w", "r", "a"
+    for rida in f:
+        print(rida) # siin sa tootled seda rida
+        # nt rida.strip()
+        # rida.split(), kui rida on K;K;K siis rida.split(";")
+        rida = rida.strip() # kirjutad vana rea yle puhta vaartusega
+        print (rida.split(";")) # .split() teeb LIST-iks!
+        
+        
+    f.readlines() # loeb terve faili, peale seda pead for tsykliga ilmselt uuesti yle kaima (ei soovita!)
+        
+        
+        
+        
+# ======================== faili kirjutamine =====================
+
+with open("Uus.txt", "w") as fail:
+    fail.write("1\n") # kirjutades ilmselt tahad panna "\n" mis paneb kursori uuele reale
+    fail.write("2\n")
+        
+        
+        
+# ================== jarjend ehk list ===========================
+
+
+nädalapäevad = ["esmaspäev", "teisipäev", "kolmapäev", "neljapäev", "reede", "laupäev", "pühapäev"]
+
+
+
+# esimene element jneeeee, (viimane index -1)
+print (nädalapäevad[0])
+ 
+ # tagurpidi listi keeramine: defineerime uue abilisti
+ 
+ 
+uuslst = []
+for i in range(len(nädalapäevad)):
+    uuslst.append(nädalapäevad[-1-i]) # voi uuslst += vaartus
+    
+print(uuslst)
+    
+    
+    
+# listi saab kahate viisi labida kas:
+# element haaval (alustab algusest) voi indeksite abil (kui vaja mingi suvalise koha pealt lugeda jne voi samm haaval)
+
+# len([2, 1, 4, 3, -5]) Elementide arv
+# min([2, 1, 4, 3]) Minimaalne element
+# max([2, 1, 4, 3]) Maksimaalne element
+# sum([2, 1, 4, 3]) Elementide summa
+# sorted([2, 1, 4, 3])
+
+# ==============
+vaartus = 3.333333333333
+print (round (vaartus, 1)) # teine argument ymardab 1 koma kohani
+
+
+
+# ========================== kahekordne tsykkel ehk matrix ===============================
+
+# labid kahe for tsukliga
+
+tabel = [ [1, 2, 4],
+          [1, 5, 0],
+          [2, 5, 7]]
+for rida in tabel: # sellega maarad "read"
+    for element in rida: # teisega leiad "veeru"
+        print(element)
+        
+        
+# nt teine rida kolmas veerg on: 0
+
+print(tabel[1][2])
+
+# kui tahad printimist jatkata samalt realt:
+for rida in tabel: # sellega maarad "read"
+    for element in rida: # teisega leiad "veeru"
+        print(element, end=" ") # output: 1 2 4 1 5 0 2 5 7
+        
+# ================== sonastik =================
+
+# sonastikul ei ole indexit, vaid VOTI ehk:
+
+sõnastik = {'四': 4, '五': 5, 4: 4}
+
+print(sõnastik[4]) # st võti 4 mitte index 4
+
+
+ # Funktsioon loe_failist, mis loeks need hinded sõnastikku selliselt, et võtmeks on aine ja väärtuseks hinnete järjend ning tagastaks selle sõnatiku
+def loe_failist(failinimi):
+    sõnastik = {}
+    fail = open(failinimi, encoding="UTF-8")
+    for rida in fail:
+        osad = rida.strip().split(",")
+        hinded = []
+        for el in osad[1:]:
+            hinded.append(int(el))
+        sõnastik[osad[0]] = hinded
+    fail.close()
+    return sõnastik
+
+
+# nt: {'Niklas Kaul': [825, 838, 784, 822, 915, 917, 701, 880, 982, 881]}

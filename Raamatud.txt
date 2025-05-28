@@ -1,0 +1,37 @@
+def lugemise_aeg(lehekylg_arv, kirjasuurus):
+    
+    if kirjasuurus == "suur":
+        suur = lehekylg_arv * 20
+        return suur
+    
+    elif kirjasuurus == "keskmine":
+        keskmine = lehekylg_arv * 30
+        return keskmine
+    
+    elif kirjasuurus == "väike":
+        vaike = lehekylg_arv * 40
+        return vaike
+    
+    else:
+        print("Sisesta korrektne väärtus")
+
+
+def teisenda(sec):
+    jaaksec = int(sec % 60)
+    minut = int(sec / 60)
+    tund = int(minut / 60)
+    jaakminut = int(minut % 60)
+    
+    return f"{tund} tundi, {jaakminut} minutit, {jaaksec} sekundit."
+
+
+fail = input("Sisesta faili nimi: ")
+
+with open("leheküljed.txt") as f:
+    summa = 0
+    for reanumber in f:
+        reanumber = int(reanumber.strip())
+        suurus = input(f"Raamat on {reanumber} lk. Kui suur on kirjastiil? ")
+        summa += lugemise_aeg(reanumber, suurus)
+        
+print("Kokku kulub raamatute lugemiseks: ", teisenda(summa))

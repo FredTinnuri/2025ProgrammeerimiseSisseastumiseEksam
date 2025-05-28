@@ -1,0 +1,32 @@
+def juurdekasv(pindala, juurdekasv):
+    aaker = 0.4047
+    pindala_hektarites = pindala * aaker
+    aastane_juurdekasv = pindala_hektarites * juurdekasv
+    return round(aastane_juurdekasv, 2)
+
+
+failinimi = input("Sisestage failinimi: ")
+
+fail = open(failinimi, encoding = "UTF-8")
+lst = []
+for rida in fail:
+    uusrida = float(rida.strip())
+    lst.append(uusrida)
+fail.close()
+
+
+puudejuurdekasv = float(input("Sisestage aastane juurdekasv hektari kohta tihumeetrites: "))
+
+suurus = float(input("Sisestage piir, mitmest aakrist suuremad metsatükid arvesse võtta: "))
+
+
+j = 0
+for el in lst:
+    if el > suurus:
+        aastane_juurdekasv = juurdekasv(el, puudejuurdekasv)
+        print(f"Metsatüki aastane juurdekasv on {aastane_juurdekasv}")
+        j += 1
+    else:
+        print("Metsatükki ei võeta arvesse.")
+        
+print(f"Arvutati {j} metsatüki juurdekasv")

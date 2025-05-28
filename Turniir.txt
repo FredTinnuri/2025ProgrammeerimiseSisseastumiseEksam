@@ -1,0 +1,101 @@
+def loe_seis(failinimi):
+    tulemused = {}
+    with open(failinimi, encoding="utf-8") as f:
+        voorud = f.readline().strip().split()
+        for rida in f:
+            osad = rida.strip().split()
+            if not osad:
+                continue
+            nimi = osad[0]
+            punktid = osad[1:]
+            while len(punktid) < len(voorud):
+                punktid.append("-")
+            tulemused[nimi] = punktid
+    return tulemused
+
+
+def lisa_tulemus(nimi, voor, seis, tulemus):
+    if nimi not in seis:
+        print("Osalejat ei leitud!")
+        return seis
+    indeks = voor - 1
+    if indeks >= len(seis[nimi]):
+        print("Vooru number ei sobi!")
+        return seis
+    if seis[nimi][indeks] == "-":
+        seis[nimi][indeks] = str(tulemus)
+        print("Tulemus lisatud!")
+    else:
+        print("Tulemus on juba varem lisatud!")
+    return seis
+
+
+def leia_skoor(nimi, seis):
+    if nimi not in seis:
+        print("Osalejat ei leitud!")
+        return 0
+    punktid = seis[nimi]
+    summa = 0
+    for punkt in punktid:
+        if str(punkt).isdigit():
+            summa += int(punkt)
+    return summa
+
+
+def leia_voitja(seis):
+    maks_nimi = ""
+    maks_skoor = -1
+    for nimi in seis:
+        skoor = leia_skoor(nimi, seis)
+        if skoor > maks_skoor:
+            maks_skoor = skoor
+            maks_nimi = nimi
+    print(f"Suurima skooriga on {maks_nimi} ({maks_skoor} punkti).")
+
+
+def salvesta_seis(failinimi, seis):
+    voorude_arv = max(len(p) for p in seis.values())
+    voorud = " ".join(str(i + 1) for i in range(voorude_arv))
+    with open(failinimi, "w", encoding="utf-8") as f:
+        f.write("     " + voorud + "\n")
+        for nimi, punktid in seis.items():
+            rida = [str(p) for p in punktid]
+            while len(rida) < voorude_arv:
+                rida.append("-")
+            f.write(nimi + " " + " ".join(rida) + "\n")
+
+
+def main():
+    seis = loe_seis("turniir.txt")
+
+    while True:
+        print("\nVali tegevus:")
+        print("1 - Vaata punktitabelit")
+        print("2 - Lisa tulemus")
+        print("3 - Vaata skoori")
+        print("4 - Leia võitja")
+        print("5 - Lõpeta programmi töö")
+        valik = input()
+
+        if valik == "1":
+            for nimi, punktid in seis.items():
+                print(nimi, " ".join(str(p) for p in punktid))
+        elif valik == "2":
+            nimi = input("Sisesta nimi: ")
+            voor = int(input("Sisesta voor: "))
+            tulemus = int(input("Sisesta punktid: "))
+            seis = lisa_tulemus(nimi, voor, seis, tulemus)
+        elif valik == "3":
+            nimi = input("Sisesta nimi: ")
+            skoor = leia_skoor(nimi, seis)
+            print(f"{nimi} skoor on {skoor}.")
+        elif valik == "4":
+            leia_voitja(seis)
+        elif valik == "5":
+            salvesta_seis("turniir_uus.txt", seis)
+            print("Programm lõpetas töö.")
+            break
+        else:
+            print("Tundmatu valik.")
+
+main()
